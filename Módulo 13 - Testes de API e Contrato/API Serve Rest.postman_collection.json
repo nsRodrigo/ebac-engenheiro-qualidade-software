@@ -1,0 +1,306 @@
+{
+	"info": {
+		"_postman_id": "8c8e09d2-54cf-4a18-9377-eb52c4c455ce",
+		"name": "API Serve Rest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13208372"
+	},
+	"item": [
+		{
+			"name": "Criar Usuario",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const newid = pm.response.json()\r",
+							"pm.globals.set(\"id\", newid._id);\r",
+							"\r",
+							"pm.test(\"Validar que o status code é 201\", function () {\r",
+							"      pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar mensagem de cadastro realizado\", function () {\r",
+							"      pm.expect(pm.response.text()).to.include(\"Cadastro realizado com sucesso\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nome\": \"Rodrigo Silva\",\r\n  \"email\": \"rodrigo@testebac.com.br\",\r\n  \"password\": \"testebac\",\r\n  \"administrador\": \"true\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/usuarios",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"usuarios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar Usuarios por ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validar o Status code é 200\", function () {\r",
+							"      pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar que a resposta possui nome consultado\", function () {\r",
+							"      pm.expect(pm.response.text()).to.include(`Rodrigo Silva`);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/usuarios/{{id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"usuarios",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar Usuário",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validar o Status code é 200\", function () {\r",
+							"      pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar mensagem de alteração com sucesso\", function () {\r",
+							"      pm.expect(pm.response.text()).to.include(\"Registro alterado com sucesso\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nome\": \"Rodrigo Silva v2\",\r\n  \"email\": \"rodrigov2@testebac.com.br\",\r\n  \"password\": \"testebac\",\r\n  \"administrador\": \"true\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/usuarios/{{id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"usuarios",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar Usuarios",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validar status da consulta de usuário\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/usuarios",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"usuarios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar Usuário Negativo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validar o Status code é 400\", function () {\r",
+							"      pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar mensagem de erro quando tentar madar requisição faltando campos\", function () {\r",
+							"      pm.expect(pm.response.text()).to.include(\"password é obrigatório\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nome\": \"Rodrigo Silva v2\",\r\n  \"email\": \"rodrigov2@testebac.com.br\",\r\n  \"administrador\": \"true\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/usuarios/{{id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"usuarios",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deletar Usuário",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validar o Status code é 200\", function () {\r",
+							"      pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar mensagem de exclusão com sucesso\", function () {\r",
+							"      pm.expect(pm.response.text()).to.include(\"Registro excluído com sucesso\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/usuarios/{{id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"usuarios",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Criar Usuario Negativo",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validar que o status code é 400\", function () {\r",
+							"      pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar mensagem de erro ao enviar dados incorretos\", function () {\r",
+							"      pm.expect(pm.response.text()).to.include(\"Adicione aspas em todos os valores\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nome\": \"Rodrigo Silva\",\r\n  \"email\": \"rodrigo@testebac.com.br\",\r\n  \"password\": testebac,\r\n  \"administrador\": \"true\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/usuarios",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"usuarios"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
