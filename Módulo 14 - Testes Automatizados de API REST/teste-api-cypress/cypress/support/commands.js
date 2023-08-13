@@ -24,5 +24,5 @@ Cypress.Commands.add('cadastrarProduto', (produto, valor, descricao, qtd, token)
         },
         headers: { authorization: token },
         failOnStatusCode: false
-    });
+    })
 })
